@@ -30,9 +30,12 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.jellyfin.androidtv.R
+import org.jellyfin.androidtv.preference.UserPreferences
 import org.jellyfin.androidtv.ui.base.Icon
 import org.jellyfin.androidtv.ui.base.Text
 import org.jellyfin.androidtv.ui.playback.segment.MediaSegmentRepository
+import org.koin.java.KoinJavaComponent
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -129,7 +132,12 @@ class SkipOverlayView @JvmOverloads constructor(
 
 		// Auto hide
 		LaunchedEffect(skipUiEnabled, targetPosition) {
-			delay(MediaSegmentRepository.AskToSkipAutoHideDuration)
+			val autoHideSeconds = try {
+				KoinJavaComponent.get<UserPreferences>(UserPreferences::class.java)[UserPreferences.mediaSegmentAutoHideDuration]
+			} catch (_: Exception) {
+				8
+			}
+			delay(autoHideSeconds.seconds)
 			_targetPosition.value = null
 		}
 

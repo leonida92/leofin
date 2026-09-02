@@ -26,6 +26,8 @@ class OptionsAction(
 		content = context.getString(resId)
 	}
 
+	var notifyChange: () -> Unit = {}
+
 	override fun build(category: PreferenceCategory, container: OptionsUpdateFunContainer) {
 		val pref = Preference(context).also {
 			it.isPersistent = false
@@ -43,8 +45,15 @@ class OptionsAction(
 			}
 		}
 
-		container += {
+		notifyChange = {
+			pref.title = title
+			pref.summary = content
 			pref.isEnabled = dependencyCheckFun() && enabled
+			pref.isVisible = visible
+		}
+
+		container += {
+			notifyChange()
 		}
 	}
 }

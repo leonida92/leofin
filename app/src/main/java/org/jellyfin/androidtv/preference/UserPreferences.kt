@@ -249,6 +249,21 @@ class UserPreferences(context: Context) : SharedPreferenceStore(
 		var trickPlayEnabled = booleanPreference("trick_play_enabled", false)
 
 		/**
+		 * Enable libass direct play for ASS/SSA subtitles.
+		 */
+		var assDirectPlay = booleanPreference("libass_enabled", true)
+
+		/**
+		 * Maximum days since last watched to keep showing in Next Up (0 for disabled).
+		 */
+		var maxDaysInNextUp = intPreference("max_days_in_next_up", 0)
+
+		/**
+		 * Auto hide duration for media segments (skip button) in seconds.
+		 */
+		var mediaSegmentAutoHideDuration = intPreference("media_segment_auto_hide_duration", 8)
+
+		/**
   		 * Enable PGS subtitle direct-play.
 		 */
 		var pgsDirectPlay = booleanPreference("pgs_enabled", true)

@@ -77,7 +77,7 @@ val appModule = module {
 
 			// Add client info
 			val clientName = buildString {
-				append("Jellyfin Android TV")
+				append("Leofin Android TV")
 				if (BuildConfig.DEBUG) append(" (debug)")
 			}
 			clientInfo = ClientInfo(clientName, BuildConfig.VERSION_NAME)
@@ -91,6 +91,8 @@ val appModule = module {
 			socketConnectionFactory = get<OkHttpFactory>()
 		}
 	}
+
+	single { org.jellyfin.androidtv.data.service.AppUpdateService() }
 
 	single {
 		// Create an empty API instance, the actual values are set by the SessionRepository

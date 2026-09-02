@@ -30,7 +30,7 @@ class PlaybackPreferencesScreen : OptionsFragment() {
 	private val mediaSegmentRepository: MediaSegmentRepository by inject()
 
 	override val stores: Array<PreferenceStore<*, *>>
-		get() = arrayOf(userSettingPreferences)
+		get() = arrayOf(userSettingPreferences, userPreferences)
 
 	override val screen by optionsScreen {
 		setTitle(R.string.pref_playback)
@@ -277,6 +277,17 @@ class PlaybackPreferencesScreen : OptionsFragment() {
 						default { MediaSegmentAction.NOTHING }
 					}
 				}
+			}
+
+			@Suppress("MagicNumber")
+			seekbar {
+				setTitle(R.string.pref_skip_button_duration)
+				setContent(R.string.pref_skip_button_duration_description)
+				min = 1
+				max = 30
+				increment = 1
+
+				bind(userPreferences, UserPreferences.mediaSegmentAutoHideDuration)
 			}
 		}
 

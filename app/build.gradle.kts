@@ -15,7 +15,7 @@ android {
 		targetSdk = libs.versions.android.targetSdk.get().toInt()
 
 		// Release version
-		applicationId = namespace
+		applicationId = "org.leofin.androidtv"
 		versionName = project.getVersionName()
 		versionCode = getVersionCode(versionName!!)
 	}
@@ -56,16 +56,16 @@ android {
 			isMinifyEnabled = false
 
 			// Set package names used in various XML files
-			resValue("string", "app_id", namespace!!)
-			resValue("string", "app_search_suggest_authority", "${namespace}.content")
-			resValue("string", "app_search_suggest_intent_data", "content://${namespace}.content/intent")
+			resValue("string", "app_id", "org.leofin.androidtv")
+			resValue("string", "app_search_suggest_authority", "org.leofin.androidtv.content")
+			resValue("string", "app_search_suggest_intent_data", "content://org.leofin.androidtv.content/intent")
 
 			// Set flavored application name
 			resValue("string", "app_name", "@string/app_name_release")
 
 			buildConfigField("boolean", "DEVELOPMENT", "false")
 
-			signingConfig = signingConfigs.findByName("release")
+			signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
 		}
 
 		debug {
@@ -73,9 +73,9 @@ android {
 			applicationIdSuffix = ".debug"
 
 			// Set package names used in various XML files
-			resValue("string", "app_id", namespace + applicationIdSuffix)
-			resValue("string", "app_search_suggest_authority", "${namespace + applicationIdSuffix}.content")
-			resValue("string", "app_search_suggest_intent_data", "content://${namespace + applicationIdSuffix}.content/intent")
+			resValue("string", "app_id", "org.leofin.androidtv" + applicationIdSuffix)
+			resValue("string", "app_search_suggest_authority", "org.leofin.androidtv${applicationIdSuffix}.content")
+			resValue("string", "app_search_suggest_intent_data", "content://org.leofin.androidtv${applicationIdSuffix}.content/intent")
 
 			// Set flavored application name
 			resValue("string", "app_name", "@string/app_name_debug")
@@ -96,7 +96,7 @@ android {
 	}
 }
 
-base.archivesName.set("jellyfin-androidtv-v${project.getVersionName()}")
+base.archivesName.set("leofin-androidtv-v${project.getVersionName()}")
 
 tasks.register("versionTxt") {
 	val path = layout.buildDirectory.asFile.get().resolve("version.txt")
@@ -159,6 +159,7 @@ dependencies {
 	implementation(libs.androidx.media3.exoplayer.hls)
 	implementation(libs.androidx.media3.ui)
 	implementation(libs.jellyfin.androidx.media3.ffmpeg.decoder)
+	implementation(libs.libass.media3)
 
 	// Markdown
 	implementation(libs.bundles.markwon)

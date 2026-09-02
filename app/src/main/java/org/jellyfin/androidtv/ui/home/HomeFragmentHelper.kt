@@ -14,6 +14,10 @@ import org.jellyfin.sdk.model.api.request.GetRecommendedProgramsRequest
 import org.jellyfin.sdk.model.api.request.GetRecordingsRequest
 import org.jellyfin.sdk.model.api.request.GetResumeItemsRequest
 
+import org.jellyfin.androidtv.preference.UserPreferences
+import org.koin.java.KoinJavaComponent.get
+import java.time.LocalDateTime
+
 class HomeFragmentHelper(
 	private val context: Context,
 	private val userRepository: UserRepository,
@@ -54,11 +58,15 @@ class HomeFragmentHelper(
 	}
 
 	fun loadNextUp(): HomeFragmentRow {
+		val userPreferences = get<UserPreferences>(UserPreferences::class.java)
+		val maxDays = userPreferences[UserPreferences.maxDaysInNextUp]
+		val cutoff = if (maxDays > 0) LocalDateTime.now().minusDays(maxDays.toLong()) else null
 		val query = GetNextUpRequest(
 			imageTypeLimit = 1,
 			limit = ITEM_LIMIT_NEXT_UP,
 			enableResumable = false,
-			fields = ItemRepository.browseFields
+			fields = ItemRepository.browseFields,
+			nextUpDateCutoff = cutoff,
 		)
 
 		return HomeFragmentBrowseRowDefRow(BrowseRowDef(context.getString(R.string.lbl_next_up), query, arrayOf(ChangeTriggerType.TvPlayback)))

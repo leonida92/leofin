@@ -15,6 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jellyfin.androidtv.R
@@ -25,11 +27,24 @@ import org.jellyfin.androidtv.ui.composable.rememberCurrentTime
 
 @Composable
 fun Logo(modifier: Modifier = Modifier) {
-	Image(
-		painter = painterResource(R.drawable.app_logo),
-		contentDescription = stringResource(R.string.app_name),
+	Row(
 		modifier = modifier,
-	)
+		verticalAlignment = Alignment.CenterVertically,
+		horizontalArrangement = Arrangement.spacedBy(8.dp),
+	) {
+		Image(
+			painter = painterResource(R.drawable.app_logo_mark),
+			contentDescription = stringResource(R.string.app_name),
+			modifier = Modifier.height(36.dp),
+		)
+		Text(
+			text = stringResource(R.string.app_name_release),
+			color = Color.White,
+			fontSize = 28.sp,
+			fontWeight = FontWeight.Bold,
+			fontFamily = FontFamily.SansSerif,
+		)
+	}
 }
 
 @Composable
